@@ -1,2 +1,2 @@
 # collage
-collage projects
+there's all collage projects and tasks.
