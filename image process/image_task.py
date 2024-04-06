@@ -1,4 +1,6 @@
-def convert_8path_to_4path(eight_path: list[tuple]) -> list[tuple]:
+from typing import List, Tuple
+
+def convert_eight_path_to_four_path(eight_path: List[Tuple[int, int]]) -> List[Tuple[int, int]]:
     """Convert an 8-path to a 4-path.
     
     Args:
@@ -7,37 +9,33 @@ def convert_8path_to_4path(eight_path: list[tuple]) -> list[tuple]:
     Returns:
         A list of tuples representing the 4-path.
     """
-    vh_dirs = [(0, 1), (1, 0), (-1, 0), (0, -1)]
+    directions = [(0, 1), (1, 0), (-1, 0), (0, -1)]
     result = []
-    curr = eight_path[0]
-    for nxt in eight_path[1:]:
-        d_dirs_vh = [(nxt[0] + p[0], nxt[1] + p[1]) for p in vh_dirs]
-        s_dirs_vh = [(curr[0] + p[0], curr[1] + p[1]) for p in vh_dirs]
-        if nxt in s_dirs_vh:
-            result.append(nxt)
+    current_vertex = eight_path[0]
+    for next_vertex in eight_path[1:]:
+        diagonal_directions = [(next_vertex[0] + p[0], next_vertex[1] + p[1]) for p in directions]
+        straight_directions = [(current_vertex[0] + p[0], current_vertex[1] + p[1]) for p in directions]
+        if next_vertex in straight_directions:
+            result.append(next_vertex)
         else:
-            for v in d_dirs_vh:
-                if v in s_dirs_vh:
+            for v in diagonal_directions:
+                if v in straight_directions:
                     result.append(v)
                     break
-        curr = nxt
-        result.append(curr)
+        current_vertex = next_vertex
+        result.append(current_vertex)
     return result
 
-def draw_path(path: list[tuple]):
+def draw_path(path: List[Tuple[int, int]]):
     """Draw the image showing the path."""
-    max_x = max(coord[0] for coord in path)
-    max_y = max(coord[1] for coord in path)
+    max_x, max_y = max(coord[0] for coord in path), max(coord[1] for coord in path)
     for y in range(max_y + 1):
         for x in range(max_x + 1):
-            if (x, y) in path:
-                print(1, end=" ")
-            else:
-                print(0, end=" ")
+            print(1 if (x, y) in path else 0, end=" ")
         print()
 
 if __name__ == '__main__':
     test_eight_path = [(0, 1), (1, 2), (2, 3), (3, 4)]
     draw_path(test_eight_path)
-    print("===============")
-    draw_path(convert_8path_to_4path(test_eight_path))
+    print("\n-----------------\n")
+    draw_path(convert_eight_path_to_four_path(test_eight_path))
